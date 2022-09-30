@@ -48,7 +48,7 @@ function Signup() {
           <h2>InstaBook</h2>
           <input type="text" placeholder='Name' value={name} onChange={(e)=>setName(e.target.value)} />
           <input type="text" placeholder='Email' value={email} onChange={(e)=>setEmail(e.target.value)}/>
-          <input type="text" placeholder='Password' value={password} onChange={(e)=>setPassword(e.target.value)}/>
+          <input type="password" placeholder='Password' value={password} onChange={(e)=>setPassword(e.target.value)}/>
           <button className="btn waves-effect waves-light #2196f3 blue" onClick={()=>PostData()}>Sign Up</button>
           <h6>
             <Link to='/signin'> Already have account ? </Link>
