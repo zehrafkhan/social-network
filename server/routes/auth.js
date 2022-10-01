@@ -1,6 +1,7 @@
 //= server/../auth.js
 import express from "express";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 import User from "../models/user.js" 
@@ -42,6 +43,7 @@ router.post("/signup", (req, res) => {
       console.log(err);
     });
 });
+
 //SignIn
 router.post("/signin", (req, res) => {
   const { email, password } = req.body;
@@ -56,7 +58,11 @@ router.post("/signin", (req, res) => {
     bcryptjs.compare(password,savedUser.password)
     .then(doMatch=>{
       if(doMatch){
-        res.json({message:"From Server: Successully Signed In"})
+        // res.json({message:"From Server: Successully Signed In"});
+         const token = jwt.sign({_id:savedUser._id},'secret');
+         const {_id,name,email} = savedUser;
+         res.json({token,user:{_id,name,email}});
+         console.log(token);
       }
       else{
         return res.status(422).json({ error: "Invalid Email or Password" });

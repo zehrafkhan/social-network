@@ -4,15 +4,14 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import M from 'materialize-css';
-
 function Signin() {
+ const emailRegexExp=  RegExp(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- 
   //creating network request
-  const PostData=()=>{//eslint-disable-next-line
-    if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
+  const PostData=()=>{//eslint-disable-next-line 
+    if(emailRegexExp.test(email)){
       M.toast({html: "Invalid Email Id", classes:"#b71c1c red darken-4"});
       return;
     }
@@ -27,11 +26,12 @@ function Signin() {
       })
     }).then(res=>res.json())
     .then(data=>{ 
+      console.log(data)
       if(data.error){
         M.toast({html: data.error, classes:"#b71c1c red darken-4"})
       }
       else{
-        M.toast({html:data.message, classes:"#43a047 green darken-1"})
+        M.toast({html:'signed in successfully', classes:"#43a047 green darken-1"})
         navigate('/')
       }
     }).catch(err=>{
