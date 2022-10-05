@@ -3,13 +3,18 @@ import express from "express";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { SecretValues } from "../keys.js";
-
-const router = express.Router();
 import User from "../models/user.js"
+import { requireLogin } from "../milddleware/requireLogin.js"; 
+const router = express.Router();
+
 
 router.get("/", (req, res) => {
   res.send("hello from SERVER/ROUTE/auth.js");
 });
+
+router.get("/protected",requireLogin,(req,res)=>{
+  res.send("hello user");
+})
 
 //SignUp
 router.post("/signup", (req, res) => {
