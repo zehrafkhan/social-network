@@ -12,9 +12,9 @@ router.get("/", (req, res) => {
   res.send("hello from SERVER/ROUTE/auth.js");
 });
 
-router.get("/protected",requireLogin,(req,res)=>{
-  res.send("hello user");
-})
+// router.get("/protected",requireLogin,(req,res)=>{
+//   res.send("hello user");
+// })
 
 //SignUp
 router.post("/signup", (req, res) => {

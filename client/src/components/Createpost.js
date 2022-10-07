@@ -12,7 +12,7 @@ function Createpost() {
         data.append("upload_preset", "instabooksite");
         // data.append("cloud_name", "instabookcloudzehra");
 
-       //fetch(para1,para2).then .catch {fetch is nothing but a simple function call with promise.}
+       //fetch(para1,para2).then .catch {fetch is nothing but a simple function call with promise.}it is network call
        fetch("https://api.cloudinary.com/v1_1/instabookcloudzehra/image/upload",{
        method: "post",
        body:data })
