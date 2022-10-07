@@ -1,10 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import M from 'materialize-css';
+import { useNavigate } from 'react-router-dom';
 
 function Createpost() {
 
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
-    const [image, setImage] = useState("")
+    const [image, setImage] = useState("");
+    const [url,setUrl] = useState("");
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        if(url){
+        fetch("/createpost",{
+            method:"post",
+            headers: {
+                "Content-Type":"application/json",
+                "Authorization":"Bearer"+localStorage.getItem("jwt")
+            },
+            body:JSON.stringify({
+                title:title,
+                body:body,
+                pic:url
+            })
+        }).then(res=>res.json)
+        .then(data=>{ 
+            console.log(data)
+            if(data.error){
+              M.toast({html: data.error, classes:"#b71c1c red darken-4"})
+            }
+            else{
+              M.toast({html:'Created post Successfully', classes:"#43a047 green darken-1"})
+              navigate('/')
+            }
+          }).catch(err=>{
+            console.log(err)
+          })
+    }
+},[body,navigate,title,url])
+
+
 
     const postDetails = () => {
         const data = new FormData();
@@ -18,7 +53,8 @@ function Createpost() {
        body:data })
        .then(res=>res.json())
        .then(data=>{
-        console.log(data);
+        // console.log(data);
+        setUrl(data.url);
        })                 
        .catch(err=>{
         console.log(data);

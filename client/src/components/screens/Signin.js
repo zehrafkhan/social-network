@@ -32,7 +32,7 @@ function Signin() {
       }
       else{
         localStorage.setItem("jwt",data.token)
-        localStorage.setItem("user",json.stringify(data.user))
+        localStorage.setItem("user",JSON.stringify(data.user))
         M.toast({html:'signed in successfully', classes:"#43a047 green darken-1"})
         navigate('/')
       }

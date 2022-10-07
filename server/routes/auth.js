@@ -5,19 +5,11 @@ import jwt from "jsonwebtoken";
 import { SecretValues } from "../keys.js";
 import User from "../models/user.js"
 import { requireLogin } from "../milddleware/requireLogin.js"; 
-const router = express.Router();
-
-
-router.get("/", (req, res) => {
-  res.send("hello from SERVER/ROUTE/auth.js");
-});
-
-// router.get("/protected",requireLogin,(req,res)=>{
-//   res.send("hello user");
-// })
+const routerAuth = express.Router();
+ 
 
 //SignUp
-router.post("/signup", (req, res) => {
+routerAuth.post("/signup", (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return res.status(422).json({ error: "SignUp:-Please add all details" });
@@ -51,7 +43,7 @@ router.post("/signup", (req, res) => {
 });
 
 //SignIn
-router.post("/signin", (req, res) => {
+routerAuth.post("/signin", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(422).json({ error: "SignIn:- Please add all details" }); //recieving from client - blank details
@@ -80,4 +72,4 @@ router.post("/signin", (req, res) => {
   });
 });
 
-export default router
+export default routerAuth

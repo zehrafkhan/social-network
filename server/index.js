@@ -2,14 +2,17 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import router from './routes/auth.js';
+import routerAuth from './routes/auth.js';
 import './models/user.js';
+import './models/post.js';
+import routerPost from './routes/post.js'
 
 const app = express();
 const PORT = 5000;  
 
 app.use(express.json());
-app.use(router);
+app.use(routerAuth);
+app.use(routerPost);
 
 
 const customMiddleware = (req,res,next)=>{
@@ -30,9 +33,7 @@ app.get("/login",customMiddleware,(req,res)=>{
     res.send("I am login page") //browser
 })
 
-app.listen(PORT,()=>{
-    console.log("SERVER RUNNING ON;",PORT) //terminal
-})
+
 
 
 
@@ -46,4 +47,7 @@ const CONNECTION_URL = 'mongodb+srv://socialnetwork:socialnetwork@cluster0.wstdk
 
 mongoose.connect(CONNECTION_URL).then(()=>{
     console.log(`SERVER CONNECT THROUGH THIS PORT: ${PORT}`)
+})
+app.listen(PORT,()=>{
+    console.log("SERVER RUNNING ON;",PORT) //terminal
 })

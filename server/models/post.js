@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { ObjectId } from "mongoose.Schema.type";
+// import { ObjectId } from "mongoose.Schema.type";
+const Schema = mongoose.Schema;
 const postSchema = new mongoose.Schema({
     title:{
         type: String,
@@ -14,9 +15,10 @@ const postSchema = new mongoose.Schema({
         required: true
     },
     postedBy:{
-     type: ObjectId,
+    //  type: ObjectId,
+    type: Schema.Types.ObjectId,
      ref: "user"
     }
 });
 
-mongoose.model("post",postSchema);
+mongoose.model("Post",postSchema);
