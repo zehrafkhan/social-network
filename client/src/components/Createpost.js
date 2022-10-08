@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import M from 'materialize-css';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 
-function Createpost() {
-
-    const [title, setTitle] = useState("");
-    const [body, setBody] = useState("");
-    const [image, setImage] = useState("");
+function CreatePost() {
+    const [title,setTitle] = useState("");
+    const [body,setBody] = useState("");
+    const [image,setImage] = useState("");
     const [url,setUrl] = useState("");
     const navigate = useNavigate();
-
+   
     useEffect(()=>{
-        if(url){
-        fetch("/createpost",{
+      if(url){
+        fetch('/createpost',{
             method:"post",
             headers: {
-                "Content-Type":"application/json",
-                "Authorization":"Bearer"+localStorage.getItem("jwt")
+                "Content-Type": "application/json",
+                "Authorization": "Bearer "+localStorage.getItem("jwt")
             },
             body:JSON.stringify({
                 title:title,
@@ -25,41 +24,41 @@ function Createpost() {
             })
         }).then(res=>res.json)
         .then(data=>{ 
-            console.log(data)
             if(data.error){
-              M.toast({html: data.error, classes:"#b71c1c red darken-4"})
+              console.log("data.error:"+data)
+              M.toast({html: "Not Posted", classes:"#b71c1c red darken-4"});
             }
             else{
-              M.toast({html:'Created post Successfully', classes:"#43a047 green darken-1"})
-              navigate('/')
+              console.log("data:"+data)
+              M.toast({html: "Posted", classes:"#43a047 green darken-1"});
+              navigate("/");
             }
           }).catch(err=>{
             console.log(err)
           })
-    }
-},[body,navigate,title,url])
+   }
+  },[title,body,navigate,url])
 
 
-
-    const postDetails = () => {
-        const data = new FormData();
-        data.append("file", image)
-        data.append("upload_preset", "instabooksite");
-        // data.append("cloud_name", "instabookcloudzehra");
-
-       //fetch(para1,para2).then .catch {fetch is nothing but a simple function call with promise.}it is network call
-       fetch("https://api.cloudinary.com/v1_1/instabookcloudzehra/image/upload",{
-       method: "post",
-       body:data })
-       .then(res=>res.json())
-       .then(data=>{
-        // console.log(data);
-        setUrl(data.url);
-       })                 
-       .catch(err=>{
+  
+  const postDetails= ()=>{
+    const data = new FormData();
+    data.append("file",image);
+    data.append("upload_preset","instabookSite");
+    
+    fetch("https://api.cloudinary.com/v1_1/instabookcloudzehra/image/upload",{
+    method:"post",
+    body:data 
+    })
+    .then(res=>res.json())
+    .then(data=>{
+         console.log(data);
+         setUrl(data.url);
+    })
+    .catch(err=>{
         console.log(data);
-       }) 
-    }
+    })
+}
 
 
      
@@ -93,10 +92,10 @@ function Createpost() {
                 </div>
 
             </div>
-            <button class="btn waves-effect waves-light #2196f3 blue"
+            <button className="btn waves-effect waves-light #2196f3 blue"
                 onClick={() => postDetails()}>SUBMIT POST</button>
         </div>
     )
 }
 
-export default Createpost
+export default CreatePost

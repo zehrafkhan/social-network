@@ -43,7 +43,7 @@ app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
 
-const CONNECTION_URL = 'mongodb+srv://socialnetwork:socialnetwork@cluster0.wstdk.mongodb.net/?retryWrites=true&w=majority';
+const CONNECTION_URL = 'mongodb+srv://socialnetwork:socialnetwork@cluster0.wstdk.mongodb.net/zehraDataBase?retryWrites=true&w=majority';
 
 mongoose.connect(CONNECTION_URL).then(()=>{
     console.log(`SERVER CONNECT THROUGH THIS PORT: ${PORT}`)
