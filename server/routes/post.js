@@ -1,3 +1,4 @@
+//Server/routes/post.js
 import express from "express";
 import mongoose from "mongoose";
 import { requireLogin } from "../milddleware/requireLogin.js";
@@ -8,7 +9,6 @@ const Post = mongoose.model("Post");
 
 routerPost.post('/createpost',requireLogin,(req,res)=>{
    const {title,body,pic} = req.body;
-   console.log(req.payload)
    console.log(title,body,pic);
    if(!title || !body || !pic){
     return res.status(422).json({error:"Please add all fields"});
@@ -16,7 +16,7 @@ routerPost.post('/createpost',requireLogin,(req,res)=>{
    const post = new Post({
     title,
     body,
-    photo:pic, 
+    photo:pic,
     postedBy:req.payload._id
    })
    post.save().then(result=>{
@@ -27,9 +27,10 @@ routerPost.post('/createpost',requireLogin,(req,res)=>{
    })
 })
 
-routerPost.get('/allpost',requireLogin,(req,res)=>{
+routerPost.get("/allpost",requireLogin,(req,res)=>{
    Post.find()
-   .populate("PostedBy","_id name")
+   .populate([{ path: "postedBy", strictPopulate: false }])
+   .populate("postedBy","_id name")
    .then(posts=>{
       res.json({posts})
    })
