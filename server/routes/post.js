@@ -40,8 +40,9 @@ routerPost.get("/allpost",requireLogin,(req,res)=>{
 })
 
 routerPost.get('/mypost',requireLogin,(req,res)=>{
-   Post.find({postedBy:req.user._id})
-   .populate("PostedBy","_id name")
+   Post.find({postedBy:req.payload._id})
+   .populate([{ path: "postedBy", strictPopulate: false }])
+   .populate("postedBy","_id name")
    .then(mypost=>{
       res.json({mypost})
    })

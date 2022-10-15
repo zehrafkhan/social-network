@@ -1,6 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState,useContext } from 'react';
+import {UserContext} from '../../App'
 
 function Profile() {
+  const [mypics, setmyPics] = useState([]);
+  const {state,dispatch} = useContext(UserContext)
+  useEffect(() => {
+    fetch("/mypost", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      }
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        setmyPics(result.mypost)
+      }).catch((err)=>console.log(err));
+  }, []);
+
   return (
     <div style={
       {
@@ -31,7 +47,7 @@ function Profile() {
 
         </div>
         <div>
-          <h4>zehra khan</h4>
+          <h4>{state.name}</h4>
           <div
             style={
               {
@@ -46,25 +62,11 @@ function Profile() {
           </div>
         </div>
       </div>
-      <div className="gallary">
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=1" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=2" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=3" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=4" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=5" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=6" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=7" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=8" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=9" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=10" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=11" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=12" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=13" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=14" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=15" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=16" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=17" alt="gallary pic" />
-        <img className='item' src="https://source.unsplash.com/random/200x200?sig=18" alt="gallary pic" />
+      <div className="gallary">{
+        mypics.map((item) => {
+          return <img className='item' src={item.photo} alt={item.title} />
+        })
+      }
       </div>
     </div>
   );
