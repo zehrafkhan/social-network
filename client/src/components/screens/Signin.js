@@ -9,12 +9,13 @@ import M from 'materialize-css';
 
 function Signin() {
   const { state, dispatch } = useContext(UserContext)
-  const emailRegexExp = RegExp(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+  // eslint-disable-next-line
+  const emailRegexExp = RegExp( !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   //creating network request
-  const PostData = () => {//eslint-disable-next-line 
+  const PostData = () => {
     if (emailRegexExp.test(email)) {
       M.toast({ html: "Invalid Email Id", classes: "#b71c1c red darken-4" });
       return;
