@@ -1,6 +1,8 @@
 //PATH = client/src/Home.js
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from '../../App'
+import { UserContext } from '../../App';
+import M from 'materialize-css';
+
 
 function Home() {
   const [data, setData] = useState([]);
@@ -96,14 +98,48 @@ return item;
     });
   }
 
-
+  const deletePost = (postid) => {
+    fetch(`/deletepost/${postid}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((res) => res.json())
+      .then(data=>{
+        if(data.message){
+          M.toast({html: data.message,classes:"#b71c1c red darken-4" })
+        }
+      })
+      .then((result) => {
+        console.log(result);
+        const newData =data.filter(item=>{
+              return item._id !== result._id
+        })
+        setData(newData)
+        
+      }).catch((err) => {
+        console.log(err);
+      });
+      setTimeout(()=>{
+        window.location.reload();
+      },500);
+  };
 
   return (
     <div className="home">
       {data.map((item) => {
         return (
           <div className="card home-card">
-            <h5>{item?.postedBy?.name}</h5>
+            <h5>{item?.postedBy?.name}
+            {item?.postedBy?._id === state._id &&  <i className="material-icons" style={{float:"right"}}
+                onClick={()=>{
+                  deletePost(item._id)
+                }
+               }>delete</i> }
+            </h5>
+            
             <div className="card-image">
               <img
                 src={item.photo} alt="pic"
