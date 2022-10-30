@@ -1,12 +1,11 @@
 //PATH = client/src/Home.js
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from '../../App';
-import M from 'materialize-css';
-
+import { UserContext } from "../../App";
+import M from "materialize-css";
 
 function Home() {
   const [data, setData] = useState([]);
-  const { state, dispatch } = useContext(UserContext)
+  const { state, dispatch } = useContext(UserContext);
   useEffect(() => {
     fetch("/allpost", {
       headers: {
@@ -33,14 +32,13 @@ function Home() {
       .then((res) => res.json())
       .then((result) => {
         console.log(result);
-        const newData = data.map(item => {
-          if (item._id === result._id)
-            return result;
-          else
-            return item
-        })
-        setData(newData)
-      }).catch(err => {
+        const newData = data.map((item) => {
+          if (item._id === result._id) return result;
+          else return item;
+        });
+        setData(newData);
+      })
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -59,19 +57,18 @@ function Home() {
       .then((res) => res.json())
       .then((result) => {
         console.log(result);
-        const newData = data.map(item => {
-          if (item._id === result._id)
-            return result;
-          else
-            return item
-        })
-        setData(newData)
-      }).catch(err => {
+        const newData = data.map((item) => {
+          if (item._id === result._id) return result;
+          else return item;
+        });
+        setData(newData);
+      })
+      .catch((err) => {
         console.log(err);
       });
   };
 
-  const makeComment = (text,postId)=>{
+  const makeComment = (text, postId) => {
     fetch("/comment", {
       method: "put",
       headers: {
@@ -80,23 +77,22 @@ function Home() {
       },
       body: JSON.stringify({
         postId,
-        text
+        text,
       }),
-    }).then((res) => res.json())
-    .then((result) => {
-      console.log(result);
-      const newData = data.map((item) => {
-        if (item._id === result._id) 
-          return result;
-        else
-return item;
-      });
-      setData(newData);
     })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.map((item) => {
+          if (item._id === result._id) return result;
+          else return item;
+        });
+        setData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const deletePost = (postid) => {
     fetch(`/deletepost/${postid}`, {
@@ -107,24 +103,18 @@ return item;
       },
     })
       .then((res) => res.json())
-      .then(data=>{
-        if(data.message){
-          M.toast({html: data.message,classes:"#b71c1c red darken-4" })
-        }
-      })
       .then((result) => {
         console.log(result);
-        const newData =data.filter(item=>{
-              return item._id !== result._id
-        })
-        setData(newData)
-        
-      }).catch((err) => {
+
+        M.toast({ html: result.message, classes: "#b71c1c red darken-4" });
+        const newData = data.filter((item) => {
+          return item._id !== result.data._id;
+        });
+        setData(newData);
+      })
+      .catch((err) => {
         console.log(err);
       });
-      setTimeout(()=>{
-        window.location.reload();
-      },500);
   };
 
   return (
@@ -132,24 +122,44 @@ return item;
       {data.map((item) => {
         return (
           <div className="card home-card">
-            <h5>{item?.postedBy?.name}
-            {item?.postedBy?._id === state._id &&  <i className="material-icons" style={{float:"right"}}
-                onClick={()=>{
-                  deletePost(item._id)
-                }
-               }>delete</i> }
+            <h5>
+              {item?.postedBy?.name}
+              {item?.postedBy?._id === state._id && (
+                <i
+                  className="material-icons"
+                  style={{ float: "right" }}
+                  onClick={() => {
+                    deletePost(item._id);
+                  }}
+                >
+                  delete
+                </i>
+              )}
             </h5>
-            
+
             <div className="card-image">
-              <img
-                src={item.photo} alt="pic"
-              />
+              <img src={item.photo} alt="pic" />
             </div>
             <div className="card-content">
               {item.likes.includes(state._id) ? (
-                <i className="material-icons" onClick={() => { unlikePost(item._id) }} >thumb_down</i>
-              ) : (<i className="material-icons" onClick={() => { likePost(item._id) }} >thumb_up</i>)}
-
+                <i
+                  className="material-icons"
+                  onClick={() => {
+                    unlikePost(item._id);
+                  }}
+                >
+                  thumb_down
+                </i>
+              ) : (
+                <i
+                  className="material-icons"
+                  onClick={() => {
+                    likePost(item._id);
+                  }}
+                >
+                  thumb_up
+                </i>
+              )}
 
               <h6>{item.likes.length} likes</h6>
               <h6>{item.title}</h6>
@@ -157,16 +167,20 @@ return item;
               {item.comments.map((record) => {
                 return (
                   <h6>
-                    <span style={{fontWeight:"600"}}>{record.postedBy.name}</span>
-                    <span style={{marginLeft:'5px'}}>{record.text}</span>
+                    <span style={{ fontWeight: "600" }}>
+                      {record.postedBy.name}
+                    </span>
+                    <span style={{ marginLeft: "5px" }}>{record.text}</span>
                   </h6>
                 );
               })}
-              <form onSubmit={(e)=>{
+              <form
+                onSubmit={(e) => {
                   e.preventDefault();
-                  console.log(e.target[0].value, item._id )
-                  makeComment(e.target[0].value, item._id )
-              }}>
+                  console.log(e.target[0].value, item._id);
+                  makeComment(e.target[0].value, item._id);
+                }}
+              >
                 <input type="text" placeholder="add a comment" />
               </form>
             </div>
